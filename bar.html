@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bar Demo</title>
+</head>
+<style type="text/css">
+    .chart {
+        width: 300px;
+        height: auto;
+        overflow: hidden;
+        margin: 0 auto;
+        border: 1px dashed #ccc;
+    }
+    .bar-item {
+        border: 1px solid #ccc;
+        margin: 2px 0;
+        padding: 2px 4px;
+        text-align: right;
+        background: #ccc;
+    }
+</style>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<body>
+    <div class="chart"></div>
+</body>
+<script>
+    (function(){
+        var scale = d3.scaleLinear()
+        .domain([0, 600])
+        .range([0, 300]);
+
+        d3.select(".chart")
+        .selectAll("div")
+        .data([1,2,3,4,5,6])
+        .enter()
+        .append("div")
+        .attr("class", "bar-item")
+        .style("width", function(d) {return scale(Math.floor(Math.random() * 10 * 10) * d) + "px";})
+        .text(function(d){return d;})
+    })();
+</script>
+</html>
