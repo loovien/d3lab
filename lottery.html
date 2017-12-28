@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <style>
 .container {
-  max-width: 1200x;
+  width: 1326px;
   margin: 1px auto;
 }
 .member {
@@ -12,7 +12,6 @@
   font: 8px "微软雅黑";
   line-height: 20px;
   margin: 1px 0 0 1px;
-  float: left;
   background: #eee;
   display: inline-block;
 }
@@ -120,10 +119,18 @@
                 orangewhite: d3.interpolateRgb("orange", "#eee"),
             },
             F_genbox: function() {
-                var node = d3.range(this.maxMember);
-                this.instance = d3.select(".container").selectAll("div")
-                .data(node).enter().append("div").attr("class", "member").text(function(d){return d;})
-                .attr("id", function(d) { return "member-" + d;})
+                var that = this;
+                var node = d3.range(that.maxMember);
+                d3.json("http://localhost/htmlproj/d3lab/users.json", function(resp) {
+                    that.instance = d3.select(".container").selectAll("div")
+                    .data(node).enter().append("div").attr("class", "member") //.text(function(d){return d;})
+                    .style("opacity", "0.5")
+                    .style("background", function(d) {
+                        console.log(d, resp.length)
+                        var index = d % resp.length;
+                        return "url(" + resp[index]['avatar'] + ") center center no-repeat";
+                    }).attr("id", function(d) { return "member-" + d;})
+                });
             },
             F_init: function(){
                 this.F_genbox();
@@ -133,38 +140,42 @@
                 d3.timeout(function(){
                     for(i in d3.shuffle(z)) {
                         var id = "#member-" + z[i];
-                        d3.select(id).transition().delay(i * 5).ease(d3.easeCubicIn).style("background", "red")
+                        d3.select(id).transition().delay(i * 5).ease(d3.easeCubicIn).style("background", "red").style("opacity", 1);
                     }
 
                     for(i in d3.shuffle(h)) {
                         var id = "#member-" + h[i];
-                        d3.select(id).transition().delay(i * 4).style("background", "blue")
+                        d3.select(id).transition().delay(i * 4).style("background", "blue").style("opacity", 1);
+
                     }
 
                     for(i in d3.shuffle(a)) {
-
                         var id = "#member-" + a[i];
-                        d3.select(id).transition().delay(i * 6).style("background", "green")
+                        d3.select(id).transition().delay(i * 6).style("background", "green").style("opacity", 1);
+
                     }
 
                     for(i in d3.shuffle(n)) {
                         var id = "#member-" + n[i];
-                        d3.select(id).transition().delay(i * 8).style("background", "pink")
+                        d3.select(id).transition().delay(i * 8).style("background", "pink").style("opacity", 1);
+
                     }
 
                     for(i in d3.shuffle(q)) {
                         var id = "#member-" + q[i];
-                        d3.select(id).transition().delay(i * 10).style("background", "orange")
+                        d3.select(id).transition().delay(i * 10).style("background", "orange").style("opacity", 1);
+
                     }
 
                     for(v in d3.shuffle(ii)) {
                         var id = "#member-" + ii[v];
-                        d3.select(id).transition().delay(i*9).style("background", "gray")
+                        d3.select(id).transition().delay(i*9).style("background", "#000").style("opacity", 1);
+
                     }
-                }, 1000);
+                }, 3000);
             },
             F_lottery: function() {
-                console.log(z,h,a,n,q,ii)
+                //console.log(z,h,a,n,q,ii)
                 var all = d3.merge([z,h,a,n,q,ii]);
                 for(i in all) {
                     id = "#member-" + all[i]
@@ -178,11 +189,24 @@
             F_random: function() {
                 var that = this;
                 d3.interval(function(){
+                    var randomId = "#member-" + parseInt(d3.randomUniform(0, that.maxMember)())
+                    // alert(randomId)
+                    d3.select(randomId)
+                    .transition()
+                    .style("width", "100px")
+                    .style("height", "100px")
+                    .style("opacity", 1)
+                    .transition()
+                    .duration(750)
+                    .delay(1000)
+                    .style("width", "20px")
+                    .style("height", "20px")
+                    .style("opacity", 0.4);
                 }, 1000);
             },
             F_start: function() {
                 this.F_init();
-                this.F_color();
+                //this.F_color();
                 //this.F_lottery();
                 //this.F_random();
             }
