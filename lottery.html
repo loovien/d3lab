@@ -121,7 +121,7 @@
             F_genbox: function() {
                 var that = this;
                 var node = d3.range(that.maxMember);
-                d3.json("http://localhost/htmlproj/d3lab/users.json", function(resp) {
+                d3.json("http://192.168.163.88/htmlproj/d3lab/users.json", function(resp) {
                     that.instance = d3.select(".container").selectAll("div")
                     .data(node).enter().append("div").attr("class", "member") //.text(function(d){return d;})
                     .style("opacity", "0.5")
@@ -206,7 +206,7 @@
             },
             F_start: function() {
                 this.F_init();
-                //this.F_color();
+                this.F_color();
                 //this.F_lottery();
                 //this.F_random();
             }
